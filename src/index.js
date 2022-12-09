@@ -2,6 +2,7 @@ import './assets/style/style.scss';
 import Canvas from './modules/Canvas'
 import Item from './modules/Item'
 import Controller from './modules/Controller'
+import Interface from './modules/Interface'
 
 const ITEM_WIDTH = Math.floor(171 / 4)
 const ITEM_HEIGHT = Math.floor(192 / 4)
@@ -23,10 +24,7 @@ const ITEMS = [
 
 const canvasInstance = new Canvas(document.getElementById('canvas'), CANVAS_WIDTH, CANVAS_HEIGHT, COL_COUNT, ROW_COUNT)
 const itemsInstances = ITEMS.map((item) => new Item(item.type, item.src, ITEM_WIDTH, ITEM_HEIGHT))
-const controllerInstance = new Controller({
-	canvas: canvasInstance,
-	items: itemsInstances,
-	levels: LEVELS,
+const interfaceInstance = new Interface({
 	$level: document.getElementById('level'),
 	$match: document.getElementById('match'),
 	$moves: document.getElementById('moves'),
@@ -35,6 +33,12 @@ const controllerInstance = new Controller({
 	$nextBtn: document.getElementById('next'),
 	$resetBtn: document.getElementById('reset'),
 	$restartBtn: document.getElementById('restart'),
+})
+const controllerInstance = new Controller({
+	canvasInstance: canvasInstance,
+	interfaceInstance: interfaceInstance,
+	itemsInstances: itemsInstances,
+	levels: LEVELS,
 })
 
 controllerInstance.init()

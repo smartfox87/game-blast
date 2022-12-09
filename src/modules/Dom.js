@@ -7,7 +7,7 @@ export default class Dom {
 		$el.innerText = '0'
 	}
 
-	setProgress($el, value) {
+	setWidth($el, value) {
 		$el.style.width = value * 100 + '%'
 	}
 

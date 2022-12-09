@@ -1,7 +1,6 @@
-import Dom from './Dom'
-
-export default class Controller extends Dom {
+export default class Controller {
 	#canvas
+	#interface
 	#items
 	#itemsMatrix
 	#alikeItems = []
@@ -10,31 +9,14 @@ export default class Controller extends Dom {
 	#moves
 	#score = 0
 	#match = 2
-	$match
-	$level
-	$progress
-	$moves
-	$score
-	$nextBtn
-	$resetBtn
-	$restartBtn
 
-	constructor({ canvas, items, levels, $level, $match, $progress, $moves, $score, $nextBtn, $resetBtn, $restartBtn }) {
-		super()
-		this.#canvas = canvas
-		this.#items = items
-		this.#itemsMatrix = Array(this.#canvas.colCount).fill(null)
-			.map((row, index) => Array(this.#canvas.rowCount).fill(null))
+	constructor({ canvasInstance, interfaceInstance, itemsInstances, levels }) {
+		this.#canvas = canvasInstance
+		this.#interface = interfaceInstance
+		this.#items = itemsInstances
+		this.#itemsMatrix = Array(this.#canvas.colCount).fill(null).map((row, index) => Array(this.#canvas.rowCount).fill(null))
 		this.#levels = levels
 		this.#level = localStorage.getItem('level') || 1
-		this.$level = $level
-		this.$match = $match
-		this.$progress = $progress
-		this.$moves = $moves
-		this.$score = $score
-		this.$nextBtn = $nextBtn
-		this.$resetBtn = $resetBtn
-		this.$restartBtn = $restartBtn
 	}
 
 	#clear() {
@@ -151,45 +133,26 @@ export default class Controller extends Dom {
 		}
 	}
 
-	#setLevel() {
-		this.setValue(this.$level, this.#level)
-	}
-
 	#setScore() {
 		this.#score += this.#alikeItems.length
-		if (this.#score < this.#levels[this.#level].score) {
-			this.setValue(this.$score, this.#score)
-			this.showElement(this.$resetBtn)
-		} else if (this.#score >= this.#levels[this.#level].score) {
-			this.setValue(this.$score, this.#levels[this.#level].score)
-			this.showElement(this.$nextBtn)
-			this.hideElement(this.$resetBtn)
-		}
+		this.#interface.setScore(this.#score, this.#levels[this.#level])
 	}
 
 	#resetScore() {
 		this.#score = 0
-		this.setValue(this.$score, this.#score)
-	}
-
-	#setProgress() {
-		this.setProgress(this.$progress, this.#score / this.#levels[this.#level].score)
-	}
-
-	#decreaseMoves() {
-		this.setValue(this.$moves, --this.#moves)
+		this.#interface.resetScore(this.#score)
 	}
 
 	#resetMoves() {
 		this.#moves = this.#levels[this.#level].moves
-		this.setValue(this.$moves, this.#levels[this.#level].moves)
+		this.#interface.resetMoves(this.#moves)
 	}
 
 	#setMatch() {
 		if (this.#levels[this.#level].match) {
 			this.#match = this.#levels[this.#level].match
 		}
-		this.setValue(this.$match, this.#match)
+		this.#interface.setMatch(this.#match)
 	}
 
 	#nextLevel() {
@@ -197,27 +160,27 @@ export default class Controller extends Dom {
 		if (this.#levels[nextLevel]) {
 			this.#level = nextLevel
 			this.#generateField()
-			this.#setLevel()
 			this.#resetScore()
 			this.#resetMoves()
-			this.#setProgress()
 			this.#setMatch()
-			this.hideElement(this.$nextBtn)
+			this.#interface.nextLevel()
+			this.#interface.setLevel(this.#level)
+			this.#interface.setProgress(this.#score / this.#levels[this.#level].score)
 		}
 	}
 
 	#handleNextLevelClick() {
-		this.$nextBtn.addEventListener('click', () => {
+		this.#interface.$nextBtn.addEventListener('click', () => {
 			this.#nextLevel()
 		})
 	}
 
 	#handleResetLevelClick() {
-		this.$resetBtn.addEventListener('click', () => {
+		this.#interface.$resetBtn.addEventListener('click', () => {
 			this.#resetScore()
-			this.#setProgress()
 			this.#resetMoves()
 			this.#generateField()
+			this.#interface.setProgress(this.#score / this.#levels[this.#level].score)
 		})
 	}
 
@@ -234,10 +197,10 @@ export default class Controller extends Dom {
 
 				if (this.#alikeItems.length >= this.#match) {
 					this.#setScore()
-					this.#setProgress()
-					this.#decreaseMoves()
 					this.#clearAlikeItems()
 					this.#fillGaps()
+					this.#interface.decreaseMoves(--this.#moves)
+					this.#interface.setProgress(this.#score / this.#levels[this.#level].score)
 				}
 			}
 		})
@@ -250,6 +213,6 @@ export default class Controller extends Dom {
 		this.#handleCanvasClick()
 		this.#handleNextLevelClick()
 		this.#handleResetLevelClick()
-		this.#setLevel()
+		this.#interface.setLevel(this.#level)
 	}
 }
