@@ -1,0 +1,165 @@
+body {
+	background-color: #a1a1a1;
+	font-family: Marvin, sans-serif;
+	color: #fff;
+}
+
+.game {
+	max-width: 1000px;
+	padding: 0 30px;
+	margin: 0 auto;
+	text-align: center;
+	text-transform: uppercase;
+	line-height: 1;
+	position: relative;
+}
+
+.game__header {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 44px;
+}
+
+.game__progress {
+	flex-grow: 1;
+	min-width: 0;
+	max-width: 335px;
+	padding: 10px;
+	background-color: white;
+	background-image: linear-gradient(to top, #103d79 0%, #092140 100%, #092140 100%);
+	border-radius: 0 0 12px 12px;
+	box-shadow: 0 0 16px rgba(255, 255, 255, 0.35), inset 0 0 29px rgba(4, 22, 45, 0.15);
+	text-align: center;
+	margin: 0 30px;
+}
+
+.game__progress-bar {
+	height: 24px;
+	background-color: #073980;
+	background-image: linear-gradient(to top, #032655 0%, #000f24 100%, #000f24 100%);
+	border-radius: 12px;
+	display: flex;
+	padding: 1px;
+}
+
+.game__progress-value {
+	background-color: #073980;
+	background-image: linear-gradient(to top, #60ff00 0%, #60ff00 1%, #1d9b00 32%, #a2ff00 77%, #ecffcc 100%);
+	border-radius: 11px;
+	transition-duration: 500ms;
+	max-width: 100%;
+}
+
+.game__progress-text {
+	font-size: 16px;
+	margin-bottom: 10px;
+}
+
+.game__match,
+.game__level {
+	background-color: #073980;
+	background-image: linear-gradient(to top, #7517f4 0%, #580673 19%, #9310b5 46%, #dc57f8 100%);
+	border-radius: 19px;
+	padding: 10px 25px;
+	font-size: 20px;
+	min-width: 100px;
+}
+
+.game__body {
+	display: flex;
+}
+
+.game__field {
+	margin-right: 90px;
+	padding: 15px 21px;
+	background: url(../images/bg__field.png) left top / cover no-repeat;
+}
+
+.game__content {
+	.game__actions {
+		margin-top: 30px;
+		position: static;
+		transform: none;
+		display: flex;
+		justify-content: center;
+	}
+
+	.btn {
+		animation: none;
+	}
+}
+
+.game__info {
+	background: url(../images/bg__info.png) left top / cover no-repeat;
+	width: 370px;
+	min-height: 350px;
+	padding: 20px 30px;
+}
+
+.game__moves {
+	background: url(../images/bg__moves.png) left top / cover no-repeat;
+	font-size: 34px;
+	width: 200px;
+	height: 200px;
+	margin: 0 auto;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.game__score {
+	padding: 10px;
+	background-image: linear-gradient(to top, #103d79 0%, #092140 100%, #092140 100%);
+	border-radius: 12px;
+	box-shadow: 0 0 16px rgba(255, 255, 255, 0.35), inset 0 0 29px rgba(4, 22, 45, 0.15);
+}
+
+.game__score-text {
+	font-size: 19px;
+	margin-bottom: 5px;
+}
+
+.game__score-value {
+	font-size: 34px;
+}
+
+.game__actions {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.btn {
+	display: none;
+	border-radius: 20px;
+	font-size: 16px;
+	animation: pulse 1s infinite linear;
+	padding: 15px 30px;
+	background-color: #103d79;
+	color: inherit;
+	border: none;
+	outline: none;
+	overflow: hidden;
+	position: relative;
+	cursor: pointer;
+	transition-duration: 300ms;
+	transition-property: background-color;
+
+	&:hover {
+		background-color: #00539e;
+	}
+}
+
+@keyframes pulse {
+	0% {
+		transform: scale(1.1);
+	}
+	50% {
+		transform: scale(1);
+	}
+	100% {
+		transform: scale(1.1);
+	}
+}
