@@ -19,12 +19,8 @@ export default class Controller {
 		this.#level = localStorage.getItem('level') || 1
 	}
 
-	#clear() {
-		this.#canvas.context.clearRect(0, 0, this.#canvas.width, this.#canvas.height)
-	}
-
 	#draw() {
-		this.#clear()
+		this.#canvas.clear()
 		this.#itemsMatrix.forEach((row, rowIndex) => {
 			row.forEach((cell, cellIndex) => {
 				if (cell) {
@@ -41,7 +37,7 @@ export default class Controller {
 	}
 
 	#generateField() {
-		this.#clear()
+		this.#canvas.clear()
 		this.#itemsMatrix.forEach((row) => {
 			row.forEach((cell, index) => row[index] = this.#items[Math.ceil(Math.random() * this.#items.length) - 1])
 		})

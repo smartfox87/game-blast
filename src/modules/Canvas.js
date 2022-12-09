@@ -38,4 +38,8 @@ export default class Canvas {
 	get colCount() {
 		return this.#colCount
 	}
+
+	clear() {
+		this.#context.clearRect(0, 0, this.#width, this.#height)
+	}
 }
