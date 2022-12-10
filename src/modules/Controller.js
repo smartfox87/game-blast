@@ -215,19 +215,6 @@ export default class Controller {
 		this.#interface.setMatch(this.#match)
 	}
 
-	#nextLevel() {
-		const nextLevel = this.#level + 1
-		if (this.#levels[nextLevel]) {
-			this.#level = nextLevel
-			this.#generatePlayingField()
-			this.#resetScore()
-			this.#resetMoves()
-			this.#setMatch()
-			this.#interface.setLevel(this.#level)
-			this.#interface.setProgress(this.#score / this.#levels[this.#level].score)
-		}
-	}
-
 	#handleRestartGameClick() {
 		this.#interface.$restartBtn.addEventListener('click', () => {
 			this.#level = 1
@@ -243,7 +230,16 @@ export default class Controller {
 
 	#handleNextLevelClick() {
 		this.#interface.$nextBtn.addEventListener('click', () => {
-			this.#nextLevel()
+			const nextLevel = this.#level + 1
+			if (this.#levels[nextLevel]) {
+				this.#level = nextLevel
+				this.#resetScore()
+				this.#resetMoves()
+				this.#setMatch()
+				this.#generatePlayingField()
+				this.#interface.setLevel(this.#level)
+				this.#interface.setProgress(this.#score / this.#levels[this.#level].score)
+			}
 		})
 	}
 
