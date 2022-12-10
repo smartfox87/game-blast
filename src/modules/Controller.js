@@ -255,15 +255,19 @@ export default class Controller {
 	}
 
 	#checkGameOver() {
+		let bombAvailability = false
+
 		this.#itemsMatrix.forEach((row, rowIndex) => {
 			row.forEach((cell, cellIndex) => {
+				bombAvailability = bombAvailability || cell?.type === 'bomb'
 				this.#checkPossibleMoves(rowIndex, cellIndex, this.#getUniqueId())
 			})
 		})
 		let gameIsNotOver = Object.values(this.#possibleMoves).some((move) => move.length >= this.#match)
+
 		this.#possibleMoves = {}
 		this.#alikeItems = []
-		return !gameIsNotOver
+		return !bombAvailability && !gameIsNotOver
 	}
 
 	#setScore() {
