@@ -183,12 +183,7 @@ export default class Controller {
 				this.#checkAlikeItems(rowIndex, cellIndex, this.#getUniqueId())
 			})
 		})
-		let gameIsNotOver = false
-		for (const key in this.#alikeItemsObj) {
-			if (this.#alikeItemsObj[key].length >= this.#match) {
-				gameIsNotOver = true
-			}
-		}
+		let gameIsNotOver = Object.values(this.#alikeItemsObj).some((move) => move.length >= this.#match)
 		this.#clearAlikeItemsStores()
 		return !gameIsNotOver
 	}
