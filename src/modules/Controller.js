@@ -37,14 +37,14 @@ export default class Controller {
 		})
 	}
 
-	#generateField() {
+	#generatePlayingField() {
 		this.#canvas.clear()
 		this.#itemsMatrix.forEach((row) => {
 			row.forEach((cell, index) => row[index] = this.#items[Math.ceil(Math.random() * this.#items.length) - 1])
 		})
 		this.#draw()
 		if (this.#checkGameOver()) {
-			this.#generateField()
+			this.#generatePlayingField()
 		}
 	}
 
@@ -219,7 +219,7 @@ export default class Controller {
 		const nextLevel = this.#level + 1
 		if (this.#levels[nextLevel]) {
 			this.#level = nextLevel
-			this.#generateField()
+			this.#generatePlayingField()
 			this.#resetScore()
 			this.#resetMoves()
 			this.#setMatch()
@@ -236,7 +236,7 @@ export default class Controller {
 			this.#resetMoves()
 			this.#interface.setProgress(this.#score / this.#levels[this.#level].score)
 			this.#interface.restartGame()
-			this.#generateField()
+			this.#generatePlayingField()
 		})
 	}
 
@@ -250,7 +250,7 @@ export default class Controller {
 		this.#interface.$resetBtn.addEventListener('click', () => {
 			this.#resetScore()
 			this.#resetMoves()
-			this.#generateField()
+			this.#generatePlayingField()
 			this.#interface.setProgress(this.#score / this.#levels[this.#level].score)
 		})
 	}
@@ -277,7 +277,7 @@ export default class Controller {
 	}
 
 	init() {
-		this.#generateField()
+		this.#generatePlayingField()
 		this.#setMatch()
 		this.#resetMoves()
 		this.#handleCanvasClick()
