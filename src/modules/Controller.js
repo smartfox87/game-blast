@@ -158,64 +158,67 @@ export default class Controller {
 
 	#checkPossibleMoves(rowIndex, cellIndex, uniqueMoveId) {
 		const activeItem = this.#itemsMatrix[rowIndex][cellIndex]
-		let topItem = null
-		let bottomItem = null
-		let leftItem = null
-		let rightItem = null
 
-		if (this.#itemsMatrix[rowIndex - 1]?.[cellIndex]?.type === activeItem.type && !this.#possibleMoves[uniqueMoveId]?.find((alikeItem) => alikeItem.rowIndex === rowIndex - 1 && alikeItem.cellIndex === cellIndex)) {
-			topItem = { rowIndex: rowIndex - 1, cellIndex: cellIndex }
-			if (this.#possibleMoves[uniqueMoveId]) {
-				this.#possibleMoves[uniqueMoveId].push(topItem)
-			} else {
-				this.#possibleMoves[uniqueMoveId] = [ topItem ]
-			}
-		}
-		if (this.#itemsMatrix[rowIndex + 1]?.[cellIndex]?.type === activeItem.type && !this.#possibleMoves[uniqueMoveId]?.find((alikeItem) => alikeItem.rowIndex === rowIndex + 1 && alikeItem.cellIndex === cellIndex)) {
-			bottomItem = { rowIndex: rowIndex + 1, cellIndex: cellIndex }
-			if (this.#possibleMoves[uniqueMoveId]) {
-				this.#possibleMoves[uniqueMoveId].push(bottomItem)
-			} else {
-				this.#possibleMoves[uniqueMoveId] = [ bottomItem ]
-			}
-		}
-		if (this.#itemsMatrix[rowIndex]?.[cellIndex - 1]?.type === activeItem.type && !this.#possibleMoves[uniqueMoveId]?.find((alikeItem) => alikeItem.rowIndex === rowIndex && alikeItem.cellIndex === cellIndex - 1)) {
-			leftItem = { rowIndex: rowIndex, cellIndex: cellIndex - 1 }
-			if (this.#possibleMoves[uniqueMoveId]) {
-				this.#possibleMoves[uniqueMoveId].push(leftItem)
-			} else {
-				this.#possibleMoves[uniqueMoveId] = [ leftItem ]
-			}
-		}
-		if (this.#itemsMatrix[rowIndex]?.[cellIndex + 1]?.type === activeItem.type && !this.#possibleMoves[uniqueMoveId]?.find((alikeItem) => alikeItem.rowIndex === rowIndex && alikeItem.cellIndex === cellIndex + 1)) {
-			rightItem = { rowIndex: rowIndex, cellIndex: cellIndex + 1 }
-			if (this.#possibleMoves[uniqueMoveId]) {
-				this.#possibleMoves[uniqueMoveId].push(rightItem)
-			} else {
-				this.#possibleMoves[uniqueMoveId] = [ rightItem ]
-			}
-		}
+		if (activeItem) {
+			let topItem = null
+			let bottomItem = null
+			let leftItem = null
+			let rightItem = null
 
-		if (topItem || bottomItem || leftItem || rightItem) {
-			if (!this.#possibleMoves[uniqueMoveId]?.find((alikeItem) => alikeItem.rowIndex === rowIndex && alikeItem.cellIndex === cellIndex)) {
-				this.#alikeItems.push({ rowIndex: rowIndex, cellIndex: cellIndex })
+			if (this.#itemsMatrix[rowIndex - 1]?.[cellIndex]?.type === activeItem.type && !this.#possibleMoves[uniqueMoveId]?.find((alikeItem) => alikeItem.rowIndex === rowIndex - 1 && alikeItem.cellIndex === cellIndex)) {
+				topItem = { rowIndex: rowIndex - 1, cellIndex: cellIndex }
 				if (this.#possibleMoves[uniqueMoveId]) {
-					this.#possibleMoves[uniqueMoveId].push({ rowIndex: rowIndex, cellIndex: cellIndex })
+					this.#possibleMoves[uniqueMoveId].push(topItem)
 				} else {
-					this.#possibleMoves[uniqueMoveId] = [ { rowIndex: rowIndex, cellIndex: cellIndex } ]
+					this.#possibleMoves[uniqueMoveId] = [ topItem ]
 				}
 			}
-			if (topItem) {
-				this.#checkPossibleMoves(topItem.rowIndex, topItem.cellIndex, uniqueMoveId);
+			if (this.#itemsMatrix[rowIndex + 1]?.[cellIndex]?.type === activeItem.type && !this.#possibleMoves[uniqueMoveId]?.find((alikeItem) => alikeItem.rowIndex === rowIndex + 1 && alikeItem.cellIndex === cellIndex)) {
+				bottomItem = { rowIndex: rowIndex + 1, cellIndex: cellIndex }
+				if (this.#possibleMoves[uniqueMoveId]) {
+					this.#possibleMoves[uniqueMoveId].push(bottomItem)
+				} else {
+					this.#possibleMoves[uniqueMoveId] = [ bottomItem ]
+				}
 			}
-			if (bottomItem) {
-				this.#checkPossibleMoves(bottomItem.rowIndex, bottomItem.cellIndex, uniqueMoveId);
+			if (this.#itemsMatrix[rowIndex]?.[cellIndex - 1]?.type === activeItem.type && !this.#possibleMoves[uniqueMoveId]?.find((alikeItem) => alikeItem.rowIndex === rowIndex && alikeItem.cellIndex === cellIndex - 1)) {
+				leftItem = { rowIndex: rowIndex, cellIndex: cellIndex - 1 }
+				if (this.#possibleMoves[uniqueMoveId]) {
+					this.#possibleMoves[uniqueMoveId].push(leftItem)
+				} else {
+					this.#possibleMoves[uniqueMoveId] = [ leftItem ]
+				}
 			}
-			if (leftItem) {
-				this.#checkPossibleMoves(leftItem.rowIndex, leftItem.cellIndex, uniqueMoveId);
+			if (this.#itemsMatrix[rowIndex]?.[cellIndex + 1]?.type === activeItem.type && !this.#possibleMoves[uniqueMoveId]?.find((alikeItem) => alikeItem.rowIndex === rowIndex && alikeItem.cellIndex === cellIndex + 1)) {
+				rightItem = { rowIndex: rowIndex, cellIndex: cellIndex + 1 }
+				if (this.#possibleMoves[uniqueMoveId]) {
+					this.#possibleMoves[uniqueMoveId].push(rightItem)
+				} else {
+					this.#possibleMoves[uniqueMoveId] = [ rightItem ]
+				}
 			}
-			if (rightItem) {
-				this.#checkPossibleMoves(rightItem.rowIndex, rightItem.cellIndex, uniqueMoveId);
+
+			if (topItem || bottomItem || leftItem || rightItem) {
+				if (!this.#possibleMoves[uniqueMoveId]?.find((alikeItem) => alikeItem.rowIndex === rowIndex && alikeItem.cellIndex === cellIndex)) {
+					this.#alikeItems.push({ rowIndex: rowIndex, cellIndex: cellIndex })
+					if (this.#possibleMoves[uniqueMoveId]) {
+						this.#possibleMoves[uniqueMoveId].push({ rowIndex: rowIndex, cellIndex: cellIndex })
+					} else {
+						this.#possibleMoves[uniqueMoveId] = [ { rowIndex: rowIndex, cellIndex: cellIndex } ]
+					}
+				}
+				if (topItem) {
+					this.#checkPossibleMoves(topItem.rowIndex, topItem.cellIndex, uniqueMoveId);
+				}
+				if (bottomItem) {
+					this.#checkPossibleMoves(bottomItem.rowIndex, bottomItem.cellIndex, uniqueMoveId);
+				}
+				if (leftItem) {
+					this.#checkPossibleMoves(leftItem.rowIndex, leftItem.cellIndex, uniqueMoveId);
+				}
+				if (rightItem) {
+					this.#checkPossibleMoves(rightItem.rowIndex, rightItem.cellIndex, uniqueMoveId);
+				}
 			}
 		}
 	}
@@ -266,6 +269,7 @@ export default class Controller {
 		})
 		let gameIsNotOver = Object.values(this.#possibleMoves).some((move) => move.length >= this.#match)
 		this.#possibleMoves = {}
+		this.#alikeItems = []
 		return !gameIsNotOver
 	}
 
