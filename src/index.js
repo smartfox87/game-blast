@@ -11,7 +11,7 @@ const ROW_COUNT = 9
 const CANVAS_WIDTH = ITEM_WIDTH * COL_COUNT
 const CANVAS_HEIGHT = ITEM_HEIGHT * ROW_COUNT
 const LEVELS = {
-	1: { moves: 40, score: 10, match: 3 },
+	1: { moves: 40, score: 10, match: 4 },
 	2: { moves: 35, score: 20, match: 4 },
 }
 const ITEMS = [
@@ -33,6 +33,8 @@ const interfaceInstance = new Interface({
 	$nextBtn: document.getElementById('next'),
 	$resetBtn: document.getElementById('reset'),
 	$restartBtn: document.getElementById('restart'),
+	$gameOver: document.getElementById('game-over'),
+	$gameWin: document.getElementById('game-win'),
 })
 const controllerInstance = new Controller({
 	canvasInstance: canvasInstance,

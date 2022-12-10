@@ -3,7 +3,8 @@ export default class Controller {
 	#interface
 	#items
 	#itemsMatrix
-	#alikeItems = []
+	#alikeItemsArr = []
+	#alikeItemsObj = {}
 	#level
 	#levels
 	#moves
@@ -42,59 +43,102 @@ export default class Controller {
 			row.forEach((cell, index) => row[index] = this.#items[Math.ceil(Math.random() * this.#items.length) - 1])
 		})
 		this.#draw()
+		if (this.#checkGameOver()) {
+			this.#generateField()
+		}
 	}
 
-	#checkAlikeItems(rowIndex, cellIndex, excludeRowIndex, excludeCellIndex) {
+	#getUniqueId() {
+		return Math.round(Date.now() * (Math.random() || 0))
+	}
+
+	#checkAlikeItems(rowIndex, cellIndex, uniqueMoveId) {
 		const activeItem = this.#itemsMatrix[rowIndex][cellIndex]
 		let topItem = null
 		let bottomItem = null
 		let leftItem = null
 		let rightItem = null
 
-		if (this.#itemsMatrix[rowIndex - 1]?.[cellIndex]?.type === activeItem.type && !this.#alikeItems.find((alikeItem) => alikeItem.rowIndex === rowIndex - 1 && alikeItem.cellIndex === cellIndex)) {
+		if (this.#itemsMatrix[rowIndex - 1]?.[cellIndex]?.type === activeItem.type && !this.#alikeItemsArr.find((alikeItem) => alikeItem.rowIndex === rowIndex - 1 && alikeItem.cellIndex === cellIndex)) {
 			topItem = { rowIndex: rowIndex - 1, cellIndex: cellIndex }
-			this.#alikeItems.push(topItem)
-
+			this.#alikeItemsArr.push(topItem)
+			if (uniqueMoveId) {
+				if (this.#alikeItemsObj[uniqueMoveId]) {
+					this.#alikeItemsObj[uniqueMoveId].push(topItem)
+				} else {
+					this.#alikeItemsObj[uniqueMoveId] = [ topItem ]
+				}
+			}
 		}
-		if (this.#itemsMatrix[rowIndex + 1]?.[cellIndex]?.type === activeItem.type && !this.#alikeItems.find((alikeItem) => alikeItem.rowIndex === rowIndex + 1 && alikeItem.cellIndex === cellIndex)) {
+		if (this.#itemsMatrix[rowIndex + 1]?.[cellIndex]?.type === activeItem.type && !this.#alikeItemsArr.find((alikeItem) => alikeItem.rowIndex === rowIndex + 1 && alikeItem.cellIndex === cellIndex)) {
 			bottomItem = { rowIndex: rowIndex + 1, cellIndex: cellIndex }
-			this.#alikeItems.push(bottomItem)
-
+			this.#alikeItemsArr.push(bottomItem)
+			if (uniqueMoveId) {
+				if (this.#alikeItemsObj[uniqueMoveId]) {
+					this.#alikeItemsObj[uniqueMoveId].push(bottomItem)
+				} else {
+					this.#alikeItemsObj[uniqueMoveId] = [ bottomItem ]
+				}
+			}
 		}
-		if (this.#itemsMatrix[rowIndex]?.[cellIndex - 1]?.type === activeItem.type && !this.#alikeItems.find((alikeItem) => alikeItem.rowIndex === rowIndex && alikeItem.cellIndex === cellIndex - 1)) {
+		if (this.#itemsMatrix[rowIndex]?.[cellIndex - 1]?.type === activeItem.type && !this.#alikeItemsArr.find((alikeItem) => alikeItem.rowIndex === rowIndex && alikeItem.cellIndex === cellIndex - 1)) {
 			leftItem = { rowIndex: rowIndex, cellIndex: cellIndex - 1 }
-			this.#alikeItems.push(leftItem)
-
+			this.#alikeItemsArr.push(leftItem)
+			if (uniqueMoveId) {
+				if (this.#alikeItemsObj[uniqueMoveId]) {
+					this.#alikeItemsObj[uniqueMoveId].push(leftItem)
+				} else {
+					this.#alikeItemsObj[uniqueMoveId] = [ leftItem ]
+				}
+			}
 		}
-		if (this.#itemsMatrix[rowIndex]?.[cellIndex + 1]?.type === activeItem.type && !this.#alikeItems.find((alikeItem) => alikeItem.rowIndex === rowIndex && alikeItem.cellIndex === cellIndex + 1)) {
+		if (this.#itemsMatrix[rowIndex]?.[cellIndex + 1]?.type === activeItem.type && !this.#alikeItemsArr.find((alikeItem) => alikeItem.rowIndex === rowIndex && alikeItem.cellIndex === cellIndex + 1)) {
 			rightItem = { rowIndex: rowIndex, cellIndex: cellIndex + 1 }
-			this.#alikeItems.push(rightItem)
-
+			this.#alikeItemsArr.push(rightItem)
+			if (uniqueMoveId) {
+				if (this.#alikeItemsObj[uniqueMoveId]) {
+					this.#alikeItemsObj[uniqueMoveId].push(rightItem)
+				} else {
+					this.#alikeItemsObj[uniqueMoveId] = [ rightItem ]
+				}
+			}
 		}
 
 		if (topItem || bottomItem || leftItem || rightItem) {
-			if (!this.#alikeItems.find((alikeItem) => alikeItem.rowIndex === rowIndex && alikeItem.cellIndex === cellIndex)) {
-				this.#alikeItems.push({ rowIndex: rowIndex, cellIndex: cellIndex })
+			if (!this.#alikeItemsArr.find((alikeItem) => alikeItem.rowIndex === rowIndex && alikeItem.cellIndex === cellIndex)) {
+				this.#alikeItemsArr.push({ rowIndex: rowIndex, cellIndex: cellIndex })
+				if (uniqueMoveId) {
+					if (this.#alikeItemsObj[uniqueMoveId]) {
+						this.#alikeItemsObj[uniqueMoveId].push({ rowIndex: rowIndex, cellIndex: cellIndex })
+					} else {
+						this.#alikeItemsObj[uniqueMoveId] = [ { rowIndex: rowIndex, cellIndex: cellIndex } ]
+					}
+				}
 			}
 			if (topItem) {
-				this.#checkAlikeItems(topItem.rowIndex, topItem.cellIndex);
+				this.#checkAlikeItems(topItem.rowIndex, topItem.cellIndex, uniqueMoveId);
 			}
 			if (bottomItem) {
-				this.#checkAlikeItems(bottomItem.rowIndex, bottomItem.cellIndex);
+				this.#checkAlikeItems(bottomItem.rowIndex, bottomItem.cellIndex, uniqueMoveId);
 			}
 			if (leftItem) {
-				this.#checkAlikeItems(leftItem.rowIndex, leftItem.cellIndex);
+				this.#checkAlikeItems(leftItem.rowIndex, leftItem.cellIndex, uniqueMoveId);
 			}
 			if (rightItem) {
-				this.#checkAlikeItems(rightItem.rowIndex, rightItem.cellIndex);
+				this.#checkAlikeItems(rightItem.rowIndex, rightItem.cellIndex, uniqueMoveId);
 			}
 		}
 	}
 
+	#clearAlikeItemsStores() {
+		this.#alikeItemsArr = []
+		this.#alikeItemsObj = {}
+	}
+
 	#clearAlikeItems() {
-		this.#alikeItems.forEach(({ rowIndex, cellIndex }) => this.#itemsMatrix[rowIndex][cellIndex] = null)
+		this.#alikeItemsArr.forEach(({ rowIndex, cellIndex }) => this.#itemsMatrix[rowIndex][cellIndex] = null)
 		this.#draw()
-		this.#alikeItems = []
+		this.#clearAlikeItemsStores()
 	}
 
 	#getRandomItem() {
@@ -129,8 +173,28 @@ export default class Controller {
 		}
 	}
 
+	#checkFinishedLevel() {
+		return this.#score >= this.#levels[this.#level].score
+	}
+
+	#checkGameOver() {
+		this.#itemsMatrix.forEach((row, rowIndex) => {
+			row.forEach((cell, cellIndex) => {
+				this.#checkAlikeItems(rowIndex, cellIndex, this.#getUniqueId())
+			})
+		})
+		let gameIsNotOver = false
+		for (const key in this.#alikeItemsObj) {
+			if (this.#alikeItemsObj[key].length >= this.#match) {
+				gameIsNotOver = true
+			}
+		}
+		this.#clearAlikeItemsStores()
+		return !gameIsNotOver
+	}
+
 	#setScore() {
-		this.#score += this.#alikeItems.length
+		this.#score += this.#alikeItemsArr.length
 		this.#interface.setScore(this.#score, this.#levels[this.#level])
 	}
 
@@ -165,6 +229,17 @@ export default class Controller {
 		}
 	}
 
+	#handleRestartGameClick() {
+		this.#interface.$restartBtn.addEventListener('click', () => {
+			this.#level = 1
+			this.#resetScore()
+			this.#resetMoves()
+			this.#interface.setProgress(this.#score / this.#levels[this.#level].score)
+			this.#interface.restartGame()
+			this.#generateField()
+		})
+	}
+
 	#handleNextLevelClick() {
 		this.#interface.$nextBtn.addEventListener('click', () => {
 			this.#nextLevel()
@@ -180,10 +255,6 @@ export default class Controller {
 		})
 	}
 
-	#checkFinishedLevel() {
-		return this.#score >= this.#levels[this.#level].score
-	}
-
 	#handleCanvasClick() {
 		this.#canvas.canvas.addEventListener('click', (event) => {
 			if (!this.#checkFinishedLevel()) {
@@ -191,12 +262,15 @@ export default class Controller {
 				const yIndex = Math.floor(event.offsetY / (this.#canvas.height / this.#canvas.rowCount))
 				this.#checkAlikeItems(yIndex, xIndex)
 
-				if (this.#alikeItems.length >= this.#match) {
+				if (this.#alikeItemsArr.length >= this.#match) {
 					this.#setScore()
 					this.#clearAlikeItems()
 					this.#fillGaps()
 					this.#interface.decreaseMoves(--this.#moves)
 					this.#interface.setProgress(this.#score / this.#levels[this.#level].score)
+					if (this.#checkGameOver()) {
+						this.#interface.showGameOver()
+					}
 				}
 			}
 		})
@@ -209,6 +283,7 @@ export default class Controller {
 		this.#handleCanvasClick()
 		this.#handleNextLevelClick()
 		this.#handleResetLevelClick()
+		this.#handleRestartGameClick()
 		this.#interface.setLevel(this.#level)
 	}
 }

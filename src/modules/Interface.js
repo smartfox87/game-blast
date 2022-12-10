@@ -9,8 +9,10 @@ export default class Interface extends Dom {
 	$nextBtn
 	$resetBtn
 	$restartBtn
+	$gameOver
+	$gameWin
 
-	constructor({ $level, $match, $progress, $moves, $score, $nextBtn, $resetBtn, $restartBtn }) {
+	constructor({ $level, $match, $progress, $moves, $score, $nextBtn, $resetBtn, $restartBtn, $gameOver, $gameWin }) {
 		super()
 		this.$level = $level
 		this.$match = $match
@@ -20,6 +22,8 @@ export default class Interface extends Dom {
 		this.$nextBtn = $nextBtn
 		this.$resetBtn = $resetBtn
 		this.$restartBtn = $restartBtn
+		this.$gameOver = $gameOver
+		this.$gameWin = $gameWin
 	}
 
 	setLevel(value) {
@@ -59,5 +63,15 @@ export default class Interface extends Dom {
 
 	nextLevel() {
 		this.hideElement(this.$nextBtn)
+	}
+
+	restartGame() {
+		this.hideElement(this.$gameOver)
+		this.hideElement(this.$restartBtn)
+	}
+
+	showGameOver() {
+		this.showElement(this.$gameOver)
+		this.showElement(this.$restartBtn)
 	}
 }

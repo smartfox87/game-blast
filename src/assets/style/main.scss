@@ -56,6 +56,7 @@ body {
 	margin-bottom: 10px;
 }
 
+.game__messsage,
 .game__match,
 .game__level {
 	background-color: #073980;
@@ -129,6 +130,13 @@ body {
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
+}
+
+.game__messsage {
+	margin-bottom: 15px;
+	display: none;
+	padding-top: 20px;
+	padding-bottom: 20px;
 }
 
 .btn {
