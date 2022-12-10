@@ -1,10 +1,12 @@
 export default class Item {
+	#chance
 	#type
 	#image
 	#width
 	#height
 
-	constructor(type, src, width, height) {
+	constructor(chance, type, src, width, height) {
+		this.#chance = chance
 		this.#type = type
 		this.#image = new Image()
 		this.#image.src = src
@@ -12,6 +14,9 @@ export default class Item {
 		this.#image.height = this.#height = height
 	}
 
+	get chance() {
+		return this.#chance
+	}
 
 	get image() {
 		return this.#image

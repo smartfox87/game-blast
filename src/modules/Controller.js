@@ -37,10 +37,16 @@ export default class Controller {
 		})
 	}
 
+	#getRandomItem() {
+		const randomItem = this.#items[Math.ceil(Math.random() * this.#items.length) - 1]
+		const checkChance = Math.random() <= randomItem.chance
+		return checkChance ? randomItem : this.#getRandomItem()
+	}
+
 	#generatePlayingField() {
 		this.#canvas.clear()
 		this.#itemsMatrix.forEach((row) => {
-			row.forEach((cell, index) => row[index] = this.#items[Math.ceil(Math.random() * this.#items.length) - 1])
+			row.forEach((cell, index) => row[index] = this.#getRandomItem())
 		})
 		this.#draw()
 		if (this.#checkGameOver()) {
@@ -139,10 +145,6 @@ export default class Controller {
 		this.#alikeItemsArr.forEach(({ rowIndex, cellIndex }) => this.#itemsMatrix[rowIndex][cellIndex] = null)
 		this.#draw()
 		this.#clearAlikeItemsStores()
-	}
-
-	#getRandomItem() {
-		return this.#items[Math.floor((this.#items.length - 1) * Math.random())]
 	}
 
 	#checkFullMatrix() {
