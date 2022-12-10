@@ -59,7 +59,16 @@ export default class Controller {
 		return Math.round(Date.now() * (Math.random() || 0))
 	}
 
-	#checkAlikeItems(rowIndex, cellIndex, uniqueMoveId) {
+	#processPickItem(rowIndex, cellIndex, uniqueMoveId) {
+		const activeItem = this.#itemsMatrix[rowIndex][cellIndex]
+		if (activeItem.type === 'bomb') {
+			this.#checkBombNeighbours(rowIndex, cellIndex)
+		} else {
+			this.#checkAlikeItems(rowIndex, cellIndex, uniqueMoveId)
+		}
+	}
+
+	#checkAlikeItems(rowIndex, cellIndex) {
 		const activeItem = this.#itemsMatrix[rowIndex][cellIndex]
 		let topItem = null
 		let bottomItem = null
@@ -103,20 +112,39 @@ export default class Controller {
 	}
 
 	#checkBombNeighbours(rowIndex, cellIndex) {
+		const maxRadius = this.#levels[this.#level].bombRadius
 		this.#alikeItems.push({ rowIndex: rowIndex, cellIndex: cellIndex })
 
-		for (let radius = 1; radius <= this.#levels[this.#level].bombRadius; radius++) {
-			if (this.#itemsMatrix[rowIndex - radius]?.[cellIndex] && !this.#alikeItems.find((alikeItem) => alikeItem.rowIndex === rowIndex - radius && alikeItem.cellIndex === cellIndex)) {
-				this.#alikeItems.push({ rowIndex: rowIndex - radius, cellIndex: cellIndex })
+		for (let mainRadius = 0; mainRadius <= maxRadius; mainRadius++) {
+			if (this.#itemsMatrix[rowIndex - mainRadius]?.[cellIndex] && !this.#alikeItems.find((alikeItem) => alikeItem.rowIndex === rowIndex - mainRadius && alikeItem.cellIndex === cellIndex)) {
+				this.#alikeItems.push({ rowIndex: rowIndex - mainRadius, cellIndex: cellIndex })
+
+				for (let secondRadius = 0; secondRadius <= maxRadius; secondRadius++) {
+					if (this.#itemsMatrix[rowIndex - mainRadius]?.[cellIndex - secondRadius]) {
+						this.#alikeItems.push({ rowIndex: rowIndex - mainRadius, cellIndex: cellIndex - secondRadius })
+					}
+					if (this.#itemsMatrix[rowIndex - mainRadius]?.[cellIndex + secondRadius]) {
+						this.#alikeItems.push({ rowIndex: rowIndex - mainRadius, cellIndex: cellIndex + secondRadius })
+					}
+				}
 			}
-			if (this.#itemsMatrix[rowIndex + radius]?.[cellIndex] && !this.#alikeItems.find((alikeItem) => alikeItem.rowIndex === rowIndex + radius && alikeItem.cellIndex === cellIndex)) {
-				this.#alikeItems.push({ rowIndex: rowIndex + radius, cellIndex: cellIndex })
+			if (this.#itemsMatrix[rowIndex + mainRadius]?.[cellIndex] && !this.#alikeItems.find((alikeItem) => alikeItem.rowIndex === rowIndex + mainRadius && alikeItem.cellIndex === cellIndex)) {
+				this.#alikeItems.push({ rowIndex: rowIndex + mainRadius, cellIndex: cellIndex })
+
+				for (let secondRadius = 0; secondRadius <= maxRadius; secondRadius++) {
+					if (this.#itemsMatrix[rowIndex + mainRadius]?.[cellIndex - secondRadius]) {
+						this.#alikeItems.push({ rowIndex: rowIndex + mainRadius, cellIndex: cellIndex - secondRadius })
+					}
+					if (this.#itemsMatrix[rowIndex + mainRadius]?.[cellIndex + secondRadius]) {
+						this.#alikeItems.push({ rowIndex: rowIndex + mainRadius, cellIndex: cellIndex + secondRadius })
+					}
+				}
 			}
-			if (this.#itemsMatrix[rowIndex][cellIndex - radius] && !this.#alikeItems.find((alikeItem) => alikeItem.rowIndex === rowIndex && alikeItem.cellIndex === cellIndex - radius)) {
-				this.#alikeItems.push({ rowIndex: rowIndex, cellIndex: cellIndex - radius })
+			if (this.#itemsMatrix[rowIndex][cellIndex - mainRadius] && !this.#alikeItems.find((alikeItem) => alikeItem.rowIndex === rowIndex && alikeItem.cellIndex === cellIndex - mainRadius)) {
+				this.#alikeItems.push({ rowIndex: rowIndex, cellIndex: cellIndex - mainRadius })
 			}
-			if (this.#itemsMatrix[rowIndex][cellIndex + radius] && !this.#alikeItems.find((alikeItem) => alikeItem.rowIndex === rowIndex && alikeItem.cellIndex === cellIndex + radius)) {
-				this.#alikeItems.push({ rowIndex: rowIndex, cellIndex: cellIndex + radius })
+			if (this.#itemsMatrix[rowIndex][cellIndex + mainRadius] && !this.#alikeItems.find((alikeItem) => alikeItem.rowIndex === rowIndex && alikeItem.cellIndex === cellIndex + mainRadius)) {
+				this.#alikeItems.push({ rowIndex: rowIndex, cellIndex: cellIndex + mainRadius })
 			}
 		}
 	}
@@ -302,7 +330,7 @@ export default class Controller {
 			if (!this.#checkFinishedLevel()) {
 				const xIndex = Math.floor(event.offsetX / (this.#canvas.width / this.#canvas.colCount))
 				const yIndex = Math.floor(event.offsetY / (this.#canvas.height / this.#canvas.rowCount))
-				this.#checkAlikeItems(yIndex, xIndex)
+				this.#processPickItem(yIndex, xIndex)
 
 				if (this.#alikeItems.length >= this.#match) {
 					this.#setScore()
