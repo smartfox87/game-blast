@@ -195,7 +195,7 @@ export default class Controller {
 
 	#setScore() {
 		this.#score += this.#alikeItemsArr.length
-		this.#interface.setScore(this.#score, this.#levels[this.#level])
+		this.#interface.setScore(this.#score, this.#levels[this.#level], this.#levels[this.#level + 1])
 	}
 
 	#resetScore() {
@@ -223,7 +223,6 @@ export default class Controller {
 			this.#resetScore()
 			this.#resetMoves()
 			this.#setMatch()
-			this.#interface.nextLevel()
 			this.#interface.setLevel(this.#level)
 			this.#interface.setProgress(this.#score / this.#levels[this.#level].score)
 		}
@@ -234,6 +233,8 @@ export default class Controller {
 			this.#level = 1
 			this.#resetScore()
 			this.#resetMoves()
+			this.#setMatch()
+			this.#interface.setLevel(this.#level)
 			this.#interface.setProgress(this.#score / this.#levels[this.#level].score)
 			this.#interface.restartGame()
 			this.#generatePlayingField()
@@ -268,7 +269,7 @@ export default class Controller {
 					this.#fillGaps()
 					this.#interface.decreaseMoves(--this.#moves)
 					this.#interface.setProgress(this.#score / this.#levels[this.#level].score)
-					if (this.#checkGameOver()) {
+					if (this.#checkGameOver() && !this.#checkFinishedLevel()) {
 						this.#interface.showGameOver()
 					}
 				}

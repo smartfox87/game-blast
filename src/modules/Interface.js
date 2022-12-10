@@ -28,16 +28,20 @@ export default class Interface extends Dom {
 
 	setLevel(value) {
 		this.setValue(this.$level, value)
+		this.hideElement(this.$nextBtn)
 	}
 
-	setScore(score, currentLevel) {
+	setScore(score, currentLevel, nextLevel) {
 		if (score < currentLevel.score) {
 			this.setValue(this.$score, score)
 			this.showElement(this.$resetBtn)
 		} else if (score >= currentLevel.score) {
 			this.setValue(this.$score, currentLevel.score)
-			this.showElement(this.$nextBtn)
-			this.hideElement(this.$resetBtn)
+			if (nextLevel) {
+				this.showNextLevel()
+			} else {
+				this.showGameWin()
+			}
 		}
 	}
 
@@ -61,17 +65,25 @@ export default class Interface extends Dom {
 		this.setValue(this.$match, value)
 	}
 
-	nextLevel() {
-		this.hideElement(this.$nextBtn)
-	}
-
 	restartGame() {
 		this.hideElement(this.$gameOver)
+		this.hideElement(this.$gameWin)
 		this.hideElement(this.$restartBtn)
 	}
 
 	showGameOver() {
 		this.showElement(this.$gameOver)
 		this.showElement(this.$restartBtn)
+	}
+
+	showNextLevel() {
+		this.showElement(this.$nextBtn)
+		this.hideElement(this.$resetBtn)
+	}
+
+	showGameWin() {
+		this.showElement(this.$gameWin)
+		this.showElement(this.$restartBtn)
+		this.hideElement(this.$resetBtn)
 	}
 }
