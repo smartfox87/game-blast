@@ -332,6 +332,7 @@ export default class Controller {
 	#handleCanvasClick() {
 		this.#canvas.canvas.addEventListener('click', (event) => {
 			if (!this.#checkFinishedLevel()) {
+				this.#alikeItems = []
 				const xIndex = Math.floor(event.offsetX / (this.#canvas.width / this.#canvas.colCount))
 				const yIndex = Math.floor(event.offsetY / (this.#canvas.height / this.#canvas.rowCount))
 				this.#processPickItem(yIndex, xIndex)
