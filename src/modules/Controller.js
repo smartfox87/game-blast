@@ -120,35 +120,43 @@ export default class Controller {
 		this.#alikeItems.push({ rowIndex: rowIndex, cellIndex: cellIndex })
 
 		for (let mainRadius = 0; mainRadius <= maxRadius; mainRadius++) {
-			if (this.#itemsMatrix[rowIndex - mainRadius]?.[cellIndex] && !this.#alikeItems.find((alikeItem) => alikeItem.rowIndex === rowIndex - mainRadius && alikeItem.cellIndex === cellIndex)) {
-				this.#alikeItems.push({ rowIndex: rowIndex - mainRadius, cellIndex: cellIndex })
+			const bottomRowIndex = rowIndex - mainRadius
+			if (this.#itemsMatrix[bottomRowIndex]?.[cellIndex] && !this.#alikeItems.find((alikeItem) => alikeItem.rowIndex === bottomRowIndex && alikeItem.cellIndex === cellIndex)) {
+				this.#alikeItems.push({ rowIndex: bottomRowIndex, cellIndex: cellIndex })
 
 				for (let secondRadius = 0; secondRadius <= maxRadius; secondRadius++) {
-					if (this.#itemsMatrix[rowIndex - mainRadius]?.[cellIndex - secondRadius]) {
-						this.#alikeItems.push({ rowIndex: rowIndex - mainRadius, cellIndex: cellIndex - secondRadius })
+					const leftCellIndex = cellIndex - secondRadius
+					if (this.#itemsMatrix[bottomRowIndex]?.[leftCellIndex]) {
+						this.#alikeItems.push({ rowIndex: bottomRowIndex, cellIndex: leftCellIndex })
 					}
-					if (this.#itemsMatrix[rowIndex - mainRadius]?.[cellIndex + secondRadius]) {
-						this.#alikeItems.push({ rowIndex: rowIndex - mainRadius, cellIndex: cellIndex + secondRadius })
+					const rightCellIndex = cellIndex + secondRadius
+					if (this.#itemsMatrix[bottomRowIndex]?.[rightCellIndex]) {
+						this.#alikeItems.push({ rowIndex: bottomRowIndex, cellIndex: rightCellIndex })
 					}
 				}
 			}
-			if (this.#itemsMatrix[rowIndex + mainRadius]?.[cellIndex] && !this.#alikeItems.find((alikeItem) => alikeItem.rowIndex === rowIndex + mainRadius && alikeItem.cellIndex === cellIndex)) {
-				this.#alikeItems.push({ rowIndex: rowIndex + mainRadius, cellIndex: cellIndex })
+			const topRowIndex = rowIndex + mainRadius
+			if (this.#itemsMatrix[topRowIndex]?.[cellIndex] && !this.#alikeItems.find((alikeItem) => alikeItem.rowIndex === topRowIndex && alikeItem.cellIndex === cellIndex)) {
+				this.#alikeItems.push({ rowIndex: topRowIndex, cellIndex: cellIndex })
 
 				for (let secondRadius = 0; secondRadius <= maxRadius; secondRadius++) {
-					if (this.#itemsMatrix[rowIndex + mainRadius]?.[cellIndex - secondRadius]) {
-						this.#alikeItems.push({ rowIndex: rowIndex + mainRadius, cellIndex: cellIndex - secondRadius })
+					const leftCellIndex = cellIndex - secondRadius
+					if (this.#itemsMatrix[topRowIndex]?.[leftCellIndex]) {
+						this.#alikeItems.push({ rowIndex: topRowIndex, cellIndex: leftCellIndex })
 					}
-					if (this.#itemsMatrix[rowIndex + mainRadius]?.[cellIndex + secondRadius]) {
-						this.#alikeItems.push({ rowIndex: rowIndex + mainRadius, cellIndex: cellIndex + secondRadius })
+					const rightCellIndex = cellIndex + secondRadius
+					if (this.#itemsMatrix[topRowIndex]?.[rightCellIndex]) {
+						this.#alikeItems.push({ rowIndex: topRowIndex, cellIndex: rightCellIndex })
 					}
 				}
 			}
-			if (this.#itemsMatrix[rowIndex][cellIndex - mainRadius] && !this.#alikeItems.find((alikeItem) => alikeItem.rowIndex === rowIndex && alikeItem.cellIndex === cellIndex - mainRadius)) {
-				this.#alikeItems.push({ rowIndex: rowIndex, cellIndex: cellIndex - mainRadius })
+			const leftCellIndex = cellIndex - mainRadius
+			if (this.#itemsMatrix[rowIndex][leftCellIndex] && !this.#alikeItems.find((alikeItem) => alikeItem.rowIndex === rowIndex && alikeItem.cellIndex === leftCellIndex)) {
+				this.#alikeItems.push({ rowIndex: rowIndex, cellIndex: leftCellIndex })
 			}
-			if (this.#itemsMatrix[rowIndex][cellIndex + mainRadius] && !this.#alikeItems.find((alikeItem) => alikeItem.rowIndex === rowIndex && alikeItem.cellIndex === cellIndex + mainRadius)) {
-				this.#alikeItems.push({ rowIndex: rowIndex, cellIndex: cellIndex + mainRadius })
+			const rightCellIndex = cellIndex + mainRadius
+			if (this.#itemsMatrix[rowIndex][rightCellIndex] && !this.#alikeItems.find((alikeItem) => alikeItem.rowIndex === rowIndex && alikeItem.cellIndex === rightCellIndex)) {
+				this.#alikeItems.push({ rowIndex: rowIndex, cellIndex: rightCellIndex })
 			}
 		}
 	}
