@@ -15,12 +15,12 @@ const LEVELS = {
 	2: { moves: 35, score: 10, match: 4, bombRadius: 2 },
 }
 const ITEMS = [
-	{ chance: 1, type: 'blue', src: 'images/items/blue.png' },
-	{ chance: 1, type: 'purple', src: 'images/items/purple.png' },
-	{ chance: 1, type: 'red', src: 'images/items/red.png' },
-	{ chance: 1, type: 'yellow', src: 'images/items/yellow.png' },
-	{ chance: 1, type: 'green', src: 'images/items/green.png' },
-	{ chance: 0.05, type: 'bomb', src: 'images/items/bomb.png' },
+	{ chance: 1, type: 'blue', src: 'assets/items/blue.png' },
+	{ chance: 1, type: 'purple', src: 'assets/items/purple.png' },
+	{ chance: 1, type: 'red', src: 'assets/items/red.png' },
+	{ chance: 1, type: 'yellow', src: 'assets/items/yellow.png' },
+	{ chance: 1, type: 'green', src: 'assets/items/green.png' },
+	{ chance: 0.05, type: 'bomb', src: 'assets/items/bomb.png' },
 ]
 
 const canvasInstance = new Canvas(document.getElementById('canvas'), CANVAS_WIDTH, CANVAS_HEIGHT, COL_COUNT, ROW_COUNT)
