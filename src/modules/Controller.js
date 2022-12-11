@@ -72,6 +72,10 @@ export default class Controller {
 		}
 	}
 
+	#checkAvailabilityInAlikeItems(rowIndex, cellIndex) {
+		return this.#alikeItems.find((alikeItem) => alikeItem.rowIndex === rowIndex && alikeItem.cellIndex === cellIndex)
+	}
+
 	#checkAlikeItems(rowIndex, cellIndex) {
 		const activeItem = this.#itemsMatrix[rowIndex][cellIndex]
 		let topItem = null
@@ -79,25 +83,25 @@ export default class Controller {
 		let leftItem = null
 		let rightItem = null
 
-		if (this.#itemsMatrix[rowIndex - 1]?.[cellIndex]?.type === activeItem.type && !this.#alikeItems.find((alikeItem) => alikeItem.rowIndex === rowIndex - 1 && alikeItem.cellIndex === cellIndex)) {
+		if (this.#itemsMatrix[rowIndex - 1]?.[cellIndex]?.type === activeItem.type && !this.#checkAvailabilityInAlikeItems(rowIndex - 1, cellIndex)) {
 			topItem = { rowIndex: rowIndex - 1, cellIndex: cellIndex }
 			this.#alikeItems.push(topItem)
 		}
-		if (this.#itemsMatrix[rowIndex + 1]?.[cellIndex]?.type === activeItem.type && !this.#alikeItems.find((alikeItem) => alikeItem.rowIndex === rowIndex + 1 && alikeItem.cellIndex === cellIndex)) {
+		if (this.#itemsMatrix[rowIndex + 1]?.[cellIndex]?.type === activeItem.type && !this.#checkAvailabilityInAlikeItems(rowIndex + 1, cellIndex)) {
 			bottomItem = { rowIndex: rowIndex + 1, cellIndex: cellIndex }
 			this.#alikeItems.push(bottomItem)
 		}
-		if (this.#itemsMatrix[rowIndex][cellIndex - 1]?.type === activeItem.type && !this.#alikeItems.find((alikeItem) => alikeItem.rowIndex === rowIndex && alikeItem.cellIndex === cellIndex - 1)) {
+		if (this.#itemsMatrix[rowIndex][cellIndex - 1]?.type === activeItem.type && !this.#checkAvailabilityInAlikeItems(rowIndex, cellIndex - 1)) {
 			leftItem = { rowIndex: rowIndex, cellIndex: cellIndex - 1 }
 			this.#alikeItems.push(leftItem)
 		}
-		if (this.#itemsMatrix[rowIndex][cellIndex + 1]?.type === activeItem.type && !this.#alikeItems.find((alikeItem) => alikeItem.rowIndex === rowIndex && alikeItem.cellIndex === cellIndex + 1)) {
+		if (this.#itemsMatrix[rowIndex][cellIndex + 1]?.type === activeItem.type && !this.#checkAvailabilityInAlikeItems(rowIndex, cellIndex + 1)) {
 			rightItem = { rowIndex: rowIndex, cellIndex: cellIndex + 1 }
 			this.#alikeItems.push(rightItem)
 		}
 
 		if (topItem || bottomItem || leftItem || rightItem) {
-			if (!this.#alikeItems.find((alikeItem) => alikeItem.rowIndex === rowIndex && alikeItem.cellIndex === cellIndex)) {
+			if (!this.#checkAvailabilityInAlikeItems(rowIndex, cellIndex)) {
 				this.#alikeItems.push({ rowIndex: rowIndex, cellIndex: cellIndex })
 			}
 			if (topItem) {
@@ -121,7 +125,7 @@ export default class Controller {
 
 		for (let mainRadius = 0; mainRadius <= maxRadius; mainRadius++) {
 			const bottomRowIndex = rowIndex - mainRadius
-			if (this.#itemsMatrix[bottomRowIndex]?.[cellIndex] && !this.#alikeItems.find((alikeItem) => alikeItem.rowIndex === bottomRowIndex && alikeItem.cellIndex === cellIndex)) {
+			if (this.#itemsMatrix[bottomRowIndex]?.[cellIndex] && !this.#checkAvailabilityInAlikeItems(bottomRowIndex, cellIndex)) {
 				this.#alikeItems.push({ rowIndex: bottomRowIndex, cellIndex: cellIndex })
 
 				for (let secondRadius = 0; secondRadius <= maxRadius; secondRadius++) {
@@ -136,7 +140,7 @@ export default class Controller {
 				}
 			}
 			const topRowIndex = rowIndex + mainRadius
-			if (this.#itemsMatrix[topRowIndex]?.[cellIndex] && !this.#alikeItems.find((alikeItem) => alikeItem.rowIndex === topRowIndex && alikeItem.cellIndex === cellIndex)) {
+			if (this.#itemsMatrix[topRowIndex]?.[cellIndex] && !this.#checkAvailabilityInAlikeItems(topRowIndex, cellIndex)) {
 				this.#alikeItems.push({ rowIndex: topRowIndex, cellIndex: cellIndex })
 
 				for (let secondRadius = 0; secondRadius <= maxRadius; secondRadius++) {
@@ -151,11 +155,11 @@ export default class Controller {
 				}
 			}
 			const leftCellIndex = cellIndex - mainRadius
-			if (this.#itemsMatrix[rowIndex][leftCellIndex] && !this.#alikeItems.find((alikeItem) => alikeItem.rowIndex === rowIndex && alikeItem.cellIndex === leftCellIndex)) {
+			if (this.#itemsMatrix[rowIndex][leftCellIndex] && !this.#checkAvailabilityInAlikeItems(rowIndex, leftCellIndex)) {
 				this.#alikeItems.push({ rowIndex: rowIndex, cellIndex: leftCellIndex })
 			}
 			const rightCellIndex = cellIndex + mainRadius
-			if (this.#itemsMatrix[rowIndex][rightCellIndex] && !this.#alikeItems.find((alikeItem) => alikeItem.rowIndex === rowIndex && alikeItem.cellIndex === rightCellIndex)) {
+			if (this.#itemsMatrix[rowIndex][rightCellIndex] && !this.#checkAvailabilityInAlikeItems(rowIndex, rightCellIndex)) {
 				this.#alikeItems.push({ rowIndex: rowIndex, cellIndex: rightCellIndex })
 			}
 		}
