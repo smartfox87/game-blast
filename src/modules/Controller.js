@@ -165,6 +165,10 @@ export default class Controller {
 		}
 	}
 
+	#checkAvailabilityInPossibleMoves(uniqueMoveId, rowIndex, cellIndex) {
+		return this.#possibleMoves[uniqueMoveId]?.find((alikeItem) => alikeItem.rowIndex === rowIndex && alikeItem.cellIndex === cellIndex)
+	}
+
 	#checkPossibleMoves(rowIndex, cellIndex, uniqueMoveId) {
 		const activeItem = this.#itemsMatrix[rowIndex][cellIndex]
 
@@ -174,7 +178,7 @@ export default class Controller {
 			let leftItem = null
 			let rightItem = null
 
-			if (this.#itemsMatrix[rowIndex - 1]?.[cellIndex]?.type === activeItem.type && !this.#possibleMoves[uniqueMoveId]?.find((alikeItem) => alikeItem.rowIndex === rowIndex - 1 && alikeItem.cellIndex === cellIndex)) {
+			if (this.#itemsMatrix[rowIndex - 1]?.[cellIndex]?.type === activeItem.type && !this.#checkAvailabilityInPossibleMoves(uniqueMoveId, rowIndex - 1, cellIndex)) {
 				topItem = { rowIndex: rowIndex - 1, cellIndex: cellIndex }
 				if (this.#possibleMoves[uniqueMoveId]) {
 					this.#possibleMoves[uniqueMoveId].push(topItem)
@@ -182,7 +186,7 @@ export default class Controller {
 					this.#possibleMoves[uniqueMoveId] = [ topItem ]
 				}
 			}
-			if (this.#itemsMatrix[rowIndex + 1]?.[cellIndex]?.type === activeItem.type && !this.#possibleMoves[uniqueMoveId]?.find((alikeItem) => alikeItem.rowIndex === rowIndex + 1 && alikeItem.cellIndex === cellIndex)) {
+			if (this.#itemsMatrix[rowIndex + 1]?.[cellIndex]?.type === activeItem.type && !this.#checkAvailabilityInPossibleMoves(uniqueMoveId, rowIndex + 1, cellIndex)) {
 				bottomItem = { rowIndex: rowIndex + 1, cellIndex: cellIndex }
 				if (this.#possibleMoves[uniqueMoveId]) {
 					this.#possibleMoves[uniqueMoveId].push(bottomItem)
@@ -190,7 +194,7 @@ export default class Controller {
 					this.#possibleMoves[uniqueMoveId] = [ bottomItem ]
 				}
 			}
-			if (this.#itemsMatrix[rowIndex]?.[cellIndex - 1]?.type === activeItem.type && !this.#possibleMoves[uniqueMoveId]?.find((alikeItem) => alikeItem.rowIndex === rowIndex && alikeItem.cellIndex === cellIndex - 1)) {
+			if (this.#itemsMatrix[rowIndex]?.[cellIndex - 1]?.type === activeItem.type && !this.#checkAvailabilityInPossibleMoves(uniqueMoveId, rowIndex, cellIndex - 1)) {
 				leftItem = { rowIndex: rowIndex, cellIndex: cellIndex - 1 }
 				if (this.#possibleMoves[uniqueMoveId]) {
 					this.#possibleMoves[uniqueMoveId].push(leftItem)
@@ -198,7 +202,7 @@ export default class Controller {
 					this.#possibleMoves[uniqueMoveId] = [ leftItem ]
 				}
 			}
-			if (this.#itemsMatrix[rowIndex]?.[cellIndex + 1]?.type === activeItem.type && !this.#possibleMoves[uniqueMoveId]?.find((alikeItem) => alikeItem.rowIndex === rowIndex && alikeItem.cellIndex === cellIndex + 1)) {
+			if (this.#itemsMatrix[rowIndex]?.[cellIndex + 1]?.type === activeItem.type && !this.#checkAvailabilityInPossibleMoves(uniqueMoveId, rowIndex, cellIndex + 1)) {
 				rightItem = { rowIndex: rowIndex, cellIndex: cellIndex + 1 }
 				if (this.#possibleMoves[uniqueMoveId]) {
 					this.#possibleMoves[uniqueMoveId].push(rightItem)
@@ -208,8 +212,7 @@ export default class Controller {
 			}
 
 			if (topItem || bottomItem || leftItem || rightItem) {
-				if (!this.#possibleMoves[uniqueMoveId]?.find((alikeItem) => alikeItem.rowIndex === rowIndex && alikeItem.cellIndex === cellIndex)) {
-					this.#alikeItems.push({ rowIndex: rowIndex, cellIndex: cellIndex })
+				if (!this.#checkAvailabilityInPossibleMoves(uniqueMoveId, rowIndex, cellIndex)) {
 					if (this.#possibleMoves[uniqueMoveId]) {
 						this.#possibleMoves[uniqueMoveId].push({ rowIndex: rowIndex, cellIndex: cellIndex })
 					} else {
