@@ -4,8 +4,9 @@ import Item from './modules/Item'
 import Controller from './modules/Controller'
 import Interface from './modules/Interface'
 
-const ITEM_WIDTH = Math.floor(171 / 4)
-const ITEM_HEIGHT = Math.floor(192 / 4)
+const ANIMATION_STEP_AT_TIME = 3
+const ITEM_WIDTH = Math.floor(171 / 4) % ANIMATION_STEP_AT_TIME ? Math.floor(Math.floor(171 / 4) / ANIMATION_STEP_AT_TIME) * ANIMATION_STEP_AT_TIME : Math.floor(171 / 4)
+const ITEM_HEIGHT = Math.floor(192 / 4) % ANIMATION_STEP_AT_TIME ? Math.floor(Math.floor(192 / 4) / ANIMATION_STEP_AT_TIME) * ANIMATION_STEP_AT_TIME : Math.floor(192 / 4)
 const COL_COUNT = 9
 const ROW_COUNT = 9
 const CANVAS_WIDTH = ITEM_WIDTH * COL_COUNT
@@ -42,6 +43,7 @@ const controllerInstance = new Controller({
 	interfaceInstance: interfaceInstance,
 	itemsInstances: itemsInstances,
 	levels: LEVELS,
+	animationStep: ANIMATION_STEP_AT_TIME,
 })
 
 controllerInstance.init()

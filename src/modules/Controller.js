@@ -11,14 +11,16 @@ export default class Controller {
 	#score = 0
 	#match = 2
 	#stepFrames = 1
+	#animationStep = 1
 
-	constructor({ canvasInstance, interfaceInstance, itemsInstances, levels }) {
+	constructor({ canvasInstance, interfaceInstance, itemsInstances, levels, animationStep }) {
 		this.#canvas = canvasInstance
 		this.#interface = interfaceInstance
 		this.#items = itemsInstances
 		this.#itemsMatrix = Array(this.#canvas.colCount).fill(null).map((row, index) => Array(this.#canvas.rowCount).fill(null))
 		this.#levels = levels
 		this.#level = localStorage.getItem('level') || 1
+		this.#animationStep = animationStep
 	}
 
 	#draw() {
@@ -248,7 +250,7 @@ export default class Controller {
 	#animateFallDown(item, maxY) {
 		return new Promise((resolve) => {
 			if (item.animationFrame % this.#stepFrames === 0) {
-				item.y += 2
+				item.y += this.#animationStep
 			}
 
 			if (item.y <= maxY) {
