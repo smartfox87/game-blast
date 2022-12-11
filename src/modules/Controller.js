@@ -233,7 +233,7 @@ export default class Controller {
 	#animateFallDown(item, maxY) {
 		return new Promise((resolve) => {
 			if (item.animationFrame % this.#stepFrames === 0) {
-				item.y += 1
+				item.y += 2
 			}
 
 			if (item.y <= maxY) {
