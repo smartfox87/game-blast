@@ -232,7 +232,6 @@ export default class Controller {
 
 	#animateFallDown(item, maxY) {
 		return new Promise((resolve) => {
-
 			if (item.animationFrame % this.#stepFrames === 0) {
 				item.y += 1
 			}
@@ -254,7 +253,7 @@ export default class Controller {
 		})
 	}
 
-	#fillRowGaps(cellIndex) {
+	#fillCollGaps(cellIndex) {
 		for (let rowIndex = this.#itemsMatrix.length - 1; rowIndex >= 0; rowIndex--) {
 			if (!this.#itemsMatrix[rowIndex][cellIndex]) {
 				if (rowIndex === 0) {
@@ -264,7 +263,7 @@ export default class Controller {
 					this.#animateFallDown(item, rowIndex * item.height)
 						.then(() => {
 							if (!this.#checkFullMatrix()) {
-								this.#fillRowGaps(cellIndex)
+								this.#fillCollGaps(cellIndex)
 							}
 						})
 				} else {
@@ -276,7 +275,7 @@ export default class Controller {
 							this.#animateFallDown(item, rowIndex * item.height)
 								.then(() => {
 									if (!this.#checkFullMatrix()) {
-										this.#fillRowGaps(cellIndex)
+										this.#fillCollGaps(cellIndex)
 									}
 								})
 							break
@@ -289,7 +288,7 @@ export default class Controller {
 
 	#fillGaps() {
 		for (let cellIndex = 0; cellIndex < this.#canvas.colCount; cellIndex++) {
-			this.#fillRowGaps(cellIndex)
+			this.#fillCollGaps(cellIndex)
 		}
 	}
 
