@@ -10,7 +10,7 @@ export default class Controller {
 	#moves
 	#score = 0
 	#match = 2
-	#stepFrames = 2
+	#stepFrames = 1
 
 	constructor({ canvasInstance, interfaceInstance, itemsInstances, levels }) {
 		this.#canvas = canvasInstance
