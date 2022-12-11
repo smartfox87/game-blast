@@ -130,11 +130,11 @@ export default class Controller {
 
 				for (let secondRadius = 0; secondRadius <= maxRadius; secondRadius++) {
 					const leftCellIndex = cellIndex - secondRadius
-					if (this.#itemsMatrix[bottomRowIndex]?.[leftCellIndex]) {
+					if (this.#itemsMatrix[bottomRowIndex]?.[leftCellIndex] && !this.#checkAvailabilityInAlikeItems(bottomRowIndex, leftCellIndex)) {
 						this.#alikeItems.push({ rowIndex: bottomRowIndex, cellIndex: leftCellIndex })
 					}
 					const rightCellIndex = cellIndex + secondRadius
-					if (this.#itemsMatrix[bottomRowIndex]?.[rightCellIndex]) {
+					if (this.#itemsMatrix[bottomRowIndex]?.[rightCellIndex] && !this.#checkAvailabilityInAlikeItems(bottomRowIndex, rightCellIndex)) {
 						this.#alikeItems.push({ rowIndex: bottomRowIndex, cellIndex: rightCellIndex })
 					}
 				}
@@ -145,11 +145,11 @@ export default class Controller {
 
 				for (let secondRadius = 0; secondRadius <= maxRadius; secondRadius++) {
 					const leftCellIndex = cellIndex - secondRadius
-					if (this.#itemsMatrix[topRowIndex]?.[leftCellIndex]) {
+					if (this.#itemsMatrix[topRowIndex]?.[leftCellIndex] && !this.#checkAvailabilityInAlikeItems(topRowIndex, leftCellIndex)) {
 						this.#alikeItems.push({ rowIndex: topRowIndex, cellIndex: leftCellIndex })
 					}
 					const rightCellIndex = cellIndex + secondRadius
-					if (this.#itemsMatrix[topRowIndex]?.[rightCellIndex]) {
+					if (this.#itemsMatrix[topRowIndex]?.[rightCellIndex] && !this.#checkAvailabilityInAlikeItems(topRowIndex, rightCellIndex)) {
 						this.#alikeItems.push({ rowIndex: topRowIndex, cellIndex: rightCellIndex })
 					}
 				}
