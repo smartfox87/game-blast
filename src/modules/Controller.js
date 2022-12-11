@@ -253,29 +253,29 @@ export default class Controller {
 		})
 	}
 
-	#fillCollGaps(cellIndex) {
+	#fillCollGaps(collIndex) {
 		for (let rowIndex = this.#itemsMatrix.length - 1; rowIndex >= 0; rowIndex--) {
-			if (!this.#itemsMatrix[rowIndex][cellIndex]) {
+			if (!this.#itemsMatrix[rowIndex][collIndex]) {
 				if (rowIndex === 0) {
 					const randomItem = this.#getRandomItem()
-					const item = { ...randomItem, y: -randomItem.height, x: cellIndex * randomItem.width, animation: true }
-					this.#itemsMatrix[rowIndex][cellIndex] = item
+					const item = { ...randomItem, y: -randomItem.height, x: collIndex * randomItem.width, animation: true }
+					this.#itemsMatrix[rowIndex][collIndex] = item
 					this.#animateFallDown(item, rowIndex * item.height)
 						.then(() => {
 							if (!this.#checkFullMatrix()) {
-								this.#fillCollGaps(cellIndex)
+								this.#fillCollGaps(collIndex)
 							}
 						})
 				} else {
 					for (let rowIndexSub = rowIndex - 1; rowIndexSub >= 0; rowIndexSub--) {
-						const item = this.#itemsMatrix[rowIndexSub][cellIndex]
+						const item = this.#itemsMatrix[rowIndexSub][collIndex]
 						if (item) {
-							this.#itemsMatrix[rowIndex][cellIndex] = item
-							this.#itemsMatrix[rowIndexSub][cellIndex] = null
+							this.#itemsMatrix[rowIndex][collIndex] = item
+							this.#itemsMatrix[rowIndexSub][collIndex] = null
 							this.#animateFallDown(item, rowIndex * item.height)
 								.then(() => {
 									if (!this.#checkFullMatrix()) {
-										this.#fillCollGaps(cellIndex)
+										this.#fillCollGaps(collIndex)
 									}
 								})
 							break
@@ -287,8 +287,8 @@ export default class Controller {
 	}
 
 	#fillGaps() {
-		for (let cellIndex = 0; cellIndex < this.#canvas.colCount; cellIndex++) {
-			this.#fillCollGaps(cellIndex)
+		for (let collIndex = 0; collIndex < this.#canvas.colCount; collIndex++) {
+			this.#fillCollGaps(collIndex)
 		}
 	}
 
