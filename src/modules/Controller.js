@@ -323,7 +323,6 @@ export default class Controller {
 		let gameIsNotOver = Object.values(this.#possibleMoves).some((move) => move.length >= this.#match)
 
 		this.#possibleMoves = {}
-		this.#alikeItems = []
 		return !bombAvailability && !gameIsNotOver
 	}
 
