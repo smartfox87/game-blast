@@ -383,7 +383,9 @@ export default class Controller {
 				if (this.#alikeItems.length >= this.#match) {
 					this.#setScore()
 					this.#clearAlikeItems()
-					this.#fillGaps()
+					setTimeout(() => {
+						this.#fillGaps()
+					}, 300)
 					this.#interface.decreaseMoves(--this.#moves)
 					this.#interface.setProgress(this.#score / this.#levels[this.#level].score)
 					if (this.#checkGameOver() && !this.#checkFinishedLevel()) {
