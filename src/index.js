@@ -11,8 +11,8 @@ const ROW_COUNT = 9
 const CANVAS_WIDTH = ITEM_WIDTH * COL_COUNT
 const CANVAS_HEIGHT = ITEM_HEIGHT * ROW_COUNT
 const LEVELS = {
-	1: { moves: 40, score: 10, match: 3, bomb: 3 },
-	2: { moves: 35, score: 10, match: 4, bomb: 2 },
+	1: { moves: 40, score: 100, match: 2, bombRadius: 1 },
+	2: { moves: 35, score: 10, match: 4, bombRadius: 2 },
 }
 const ITEMS = [
 	{ chance: 1, type: 'blue', src: '/images/items/blue.png' },
@@ -20,7 +20,7 @@ const ITEMS = [
 	{ chance: 1, type: 'red', src: '/images/items/red.png' },
 	{ chance: 1, type: 'yellow', src: '/images/items/yellow.png' },
 	{ chance: 1, type: 'green', src: '/images/items/green.png' },
-	{ chance: 0.1, type: 'bomb', src: '/images/items/bomb.png' },
+	{ chance: 0.05, type: 'bomb', src: '/images/items/bomb.png' },
 ]
 
 const canvasInstance = new Canvas(document.getElementById('canvas'), CANVAS_WIDTH, CANVAS_HEIGHT, COL_COUNT, ROW_COUNT)
