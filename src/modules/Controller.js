@@ -10,6 +10,7 @@ export default class Controller {
 	#moves
 	#score = 0
 	#match = 2
+	#stepFrames = 2
 
 	constructor({ canvasInstance, interfaceInstance, itemsInstances, levels }) {
 		this.#canvas = canvasInstance
@@ -26,10 +27,10 @@ export default class Controller {
 			row.forEach((cell, cellIndex) => {
 				if (cell) {
 					if (cell.image.complete) {
-						this.#canvas.context.drawImage(cell.image, cellIndex * cell.width, rowIndex * cell.height, cell.width, cell.height)
+						this.#canvas.context.drawImage(cell.image, cell.x, cell.y, cell.width, cell.height)
 					} else {
 						cell.image.addEventListener('load', () => {
-							this.#canvas.context.drawImage(cell.image, cellIndex * cell.width, rowIndex * cell.height, cell.width, cell.height)
+							this.#canvas.context.drawImage(cell.image, cell.x, cell.y, cell.width, cell.height)
 						})
 					}
 				}
@@ -45,8 +46,11 @@ export default class Controller {
 
 	#generatePlayingField() {
 		this.#canvas.clear()
-		this.#itemsMatrix.forEach((row) => {
-			row.forEach((cell, index) => row[index] = this.#getRandomItem())
+		this.#itemsMatrix.forEach((row, rowIndex) => {
+			row.forEach((cell, cellIndex) => {
+				const randomItem = this.#getRandomItem()
+				row[cellIndex] = { ...randomItem, y: rowIndex * randomItem.height, x: cellIndex * randomItem.width }
+			})
 		})
 		if (this.#checkGameOver()) {
 			this.#generatePlayingField()
@@ -226,27 +230,66 @@ export default class Controller {
 		return this.#itemsMatrix.flat(1).filter((item) => !!item).length === this.#canvas.rowCount * this.#canvas.colCount
 	}
 
-	#fillGaps() {
-		for (let rowIndex = this.#canvas.rowCount - 1; rowIndex >= 0; rowIndex--) {
-			this.#itemsMatrix[rowIndex].forEach((cell, cellIndex) => {
-				if (!cell) {
-					if (rowIndex === 0) {
-						this.#itemsMatrix[rowIndex][cellIndex] = this.#getRandomItem()
-					} else {
-						for (let rowIndexSub = rowIndex - 1; rowIndexSub >= 0; rowIndexSub--) {
-							if (this.#itemsMatrix[rowIndexSub][cellIndex]) {
-								this.#itemsMatrix[rowIndex][cellIndex] = this.#itemsMatrix[rowIndexSub][cellIndex]
-								this.#itemsMatrix[rowIndexSub][cellIndex] = null
-								break
+	#animateFallDown(item, maxY) {
+		return new Promise((resolve) => {
+
+			if (item.animationFrame % this.#stepFrames === 0) {
+				item.y += 1
+			}
+
+			if (item.y <= maxY) {
+				item.animationFrame++
+				requestAnimationFrame(() => {
+					this.#animateFallDown(item, maxY)
+						.then(() => {
+							resolve()
+						})
+				})
+			} else {
+				item.animationFrame = 0
+				resolve()
+			}
+
+			this.#draw()
+		})
+	}
+
+	#fillRowGaps(cellIndex) {
+		for (let rowIndex = this.#itemsMatrix.length - 1; rowIndex >= 0; rowIndex--) {
+			if (!this.#itemsMatrix[rowIndex][cellIndex]) {
+				if (rowIndex === 0) {
+					const randomItem = this.#getRandomItem()
+					const item = { ...randomItem, y: -randomItem.height, x: cellIndex * randomItem.width, animation: true }
+					this.#itemsMatrix[rowIndex][cellIndex] = item
+					this.#animateFallDown(item, rowIndex * item.height)
+						.then(() => {
+							if (!this.#checkFullMatrix()) {
+								this.#fillRowGaps(cellIndex)
 							}
+						})
+				} else {
+					for (let rowIndexSub = rowIndex - 1; rowIndexSub >= 0; rowIndexSub--) {
+						const item = this.#itemsMatrix[rowIndexSub][cellIndex]
+						if (item) {
+							this.#itemsMatrix[rowIndex][cellIndex] = item
+							this.#itemsMatrix[rowIndexSub][cellIndex] = null
+							this.#animateFallDown(item, rowIndex * item.height)
+								.then(() => {
+									if (!this.#checkFullMatrix()) {
+										this.#fillRowGaps(cellIndex)
+									}
+								})
+							break
 						}
 					}
 				}
-			})
+			}
 		}
-		this.#draw()
-		if (!this.#checkFullMatrix()) {
-			this.#fillGaps()
+	}
+
+	#fillGaps() {
+		for (let cellIndex = 0; cellIndex < this.#canvas.colCount; cellIndex++) {
+			this.#fillRowGaps(cellIndex)
 		}
 	}
 

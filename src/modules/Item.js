@@ -4,6 +4,7 @@ export default class Item {
 	image
 	width
 	height
+	animationFrame = 0
 
 	constructor(chance, type, src, width, height) {
 		this.chance = chance
