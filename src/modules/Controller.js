@@ -249,11 +249,11 @@ export default class Controller {
 
 	#animateFallDown(item, maxY) {
 		return new Promise((resolve) => {
-			if (item.animationFrame % this.#stepFrames === 0) {
+			if (item.animationFrame % this.#stepFrames === 0 && item.y < maxY) {
 				item.y += this.#animationStep
 			}
 
-			if (item.y <= maxY) {
+			if (item.y < maxY) {
 				item.animationFrame++
 				requestAnimationFrame(() => {
 					this.#animateFallDown(item, maxY)
