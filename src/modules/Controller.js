@@ -185,7 +185,7 @@ export default class Controller {
 				if (this.#possibleMoves[uniqueMoveId]) {
 					this.#possibleMoves[uniqueMoveId].push(topItem)
 				} else {
-					this.#possibleMoves[uniqueMoveId] = [ topItem ]
+					this.#possibleMoves[uniqueMoveId] = [topItem]
 				}
 			}
 			if (this.#itemsMatrix[rowIndex + 1]?.[cellIndex]?.type === activeItem.type && !this.#checkAvailabilityInPossibleMoves(uniqueMoveId, rowIndex + 1, cellIndex)) {
@@ -193,7 +193,7 @@ export default class Controller {
 				if (this.#possibleMoves[uniqueMoveId]) {
 					this.#possibleMoves[uniqueMoveId].push(bottomItem)
 				} else {
-					this.#possibleMoves[uniqueMoveId] = [ bottomItem ]
+					this.#possibleMoves[uniqueMoveId] = [bottomItem]
 				}
 			}
 			if (this.#itemsMatrix[rowIndex]?.[cellIndex - 1]?.type === activeItem.type && !this.#checkAvailabilityInPossibleMoves(uniqueMoveId, rowIndex, cellIndex - 1)) {
@@ -201,7 +201,7 @@ export default class Controller {
 				if (this.#possibleMoves[uniqueMoveId]) {
 					this.#possibleMoves[uniqueMoveId].push(leftItem)
 				} else {
-					this.#possibleMoves[uniqueMoveId] = [ leftItem ]
+					this.#possibleMoves[uniqueMoveId] = [leftItem]
 				}
 			}
 			if (this.#itemsMatrix[rowIndex]?.[cellIndex + 1]?.type === activeItem.type && !this.#checkAvailabilityInPossibleMoves(uniqueMoveId, rowIndex, cellIndex + 1)) {
@@ -209,7 +209,7 @@ export default class Controller {
 				if (this.#possibleMoves[uniqueMoveId]) {
 					this.#possibleMoves[uniqueMoveId].push(rightItem)
 				} else {
-					this.#possibleMoves[uniqueMoveId] = [ rightItem ]
+					this.#possibleMoves[uniqueMoveId] = [rightItem]
 				}
 			}
 
@@ -218,7 +218,7 @@ export default class Controller {
 					if (this.#possibleMoves[uniqueMoveId]) {
 						this.#possibleMoves[uniqueMoveId].push({ rowIndex: rowIndex, cellIndex: cellIndex })
 					} else {
-						this.#possibleMoves[uniqueMoveId] = [ { rowIndex: rowIndex, cellIndex: cellIndex } ]
+						this.#possibleMoves[uniqueMoveId] = [{ rowIndex: rowIndex, cellIndex: cellIndex }]
 					}
 				}
 				if (topItem) {
