@@ -5,8 +5,10 @@ import Controller from './modules/Controller'
 import Interface from './modules/Interface'
 
 const ANIMATION_STEP_AT_TIME = 3
-const ITEM_WIDTH = Math.floor(171 / 4) % ANIMATION_STEP_AT_TIME ? Math.floor(Math.floor(171 / 4) / ANIMATION_STEP_AT_TIME) * ANIMATION_STEP_AT_TIME : Math.floor(171 / 4)
-const ITEM_HEIGHT = Math.floor(192 / 4) % ANIMATION_STEP_AT_TIME ? Math.floor(Math.floor(192 / 4) / ANIMATION_STEP_AT_TIME) * ANIMATION_STEP_AT_TIME : Math.floor(192 / 4)
+const scaledItemWidth = Math.floor(171 / 4)
+const scaledItemHeight = Math.floor(192 / 4)
+const ITEM_WIDTH = scaledItemWidth % ANIMATION_STEP_AT_TIME ? Math.floor(scaledItemWidth / ANIMATION_STEP_AT_TIME) * ANIMATION_STEP_AT_TIME : scaledItemWidth
+const ITEM_HEIGHT = scaledItemHeight % ANIMATION_STEP_AT_TIME ? Math.floor(scaledItemHeight / ANIMATION_STEP_AT_TIME) * ANIMATION_STEP_AT_TIME : scaledItemHeight
 const COL_COUNT = 9
 const ROW_COUNT = 9
 const CANVAS_WIDTH = ITEM_WIDTH * COL_COUNT
