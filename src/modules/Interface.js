@@ -46,7 +46,7 @@ export default class Interface extends Dom {
 	}
 
 	resetScore(value) {
-		this.setValue(this.$score, value)
+		this.resetValue(this.$score, value)
 	}
 
 	setProgress(value) {
