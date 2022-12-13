@@ -74,6 +74,7 @@ export default class Interface extends Dom {
 	showGameOver() {
 		this.showElement(this.$gameOver)
 		this.showElement(this.$restartBtn)
+		this.hideElement(this.$resetBtn)
 	}
 
 	showNextLevel() {
