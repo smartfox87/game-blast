@@ -334,8 +334,8 @@ export default class Controller {
 		if (this.#score < this.#levels[this.#level].score) {
 			this.#interface.setScore(this.#score)
 
-			if (this.#countResetLevel < this.#levels[this.#level].maxResetLevel) {
-				this.#interface.showResetLevel()
+			if (this.#countResetLevel < this.#levels[this.#level].maxResetField) {
+				this.#interface.showResetField()
 			}
 		} else if (this.#score >= this.#levels[this.#level].score) {
 			this.#interface.setScore(this.#levels[this.#level].score)
@@ -393,16 +393,14 @@ export default class Controller {
 		})
 	}
 
-	#handleResetLevelClick() {
+	#handleResetFieldClick() {
 		this.#interface.$resetBtn.addEventListener('click', () => {
 			this.#countResetLevel++
-			this.#resetScore()
-			this.#resetMoves()
 			this.#generatePlayingField()
 			this.#interface.setProgress(this.#score / this.#levels[this.#level].score)
 
-			if (this.#countResetLevel >= this.#levels[this.#level].maxResetLevel) {
-				this.#interface.hideResetLevel()
+			if (this.#countResetLevel >= this.#levels[this.#level].maxResetField) {
+				this.#interface.hideResetField()
 			}
 		})
 	}
@@ -437,7 +435,7 @@ export default class Controller {
 		this.#generatePlayingField()
 		this.#handleCanvasClick()
 		this.#handleNextLevelClick()
-		this.#handleResetLevelClick()
+		this.#handleResetFieldClick()
 		this.#handleRestartGameClick()
 		this.#interface.setLevel(this.#level)
 	}
