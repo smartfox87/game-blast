@@ -5,9 +5,9 @@ export default class Dom {
 
 	resetValue($el, value) {
 		if (value) {
-			$el.innerText = value
+			this.animateValue($el, $el.innerText, value, 500)
 		} else {
-			$el.innerText = '0'
+			this.animateValue($el, $el.innerText, 0, 500)
 		}
 	}
 
