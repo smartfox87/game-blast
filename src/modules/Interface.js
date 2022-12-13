@@ -35,6 +35,14 @@ export default class Interface extends Dom {
 		this.setValue(this.$score, value)
 	}
 
+	showResetLevel() {
+		this.showElement(this.$resetBtn)
+	}
+
+	hideResetLevel() {
+		this.hideElement(this.$resetBtn)
+	}
+
 	resetScore(value) {
 		this.resetValue(this.$score, value)
 	}
