@@ -31,18 +31,8 @@ export default class Interface extends Dom {
 		this.hideElement(this.$nextBtn)
 	}
 
-	setScore(score, currentLevel, nextLevel) {
-		if (score < currentLevel.score) {
-			this.setValue(this.$score, score)
-			this.showElement(this.$resetBtn)
-		} else if (score >= currentLevel.score) {
-			this.setValue(this.$score, currentLevel.score)
-			if (nextLevel) {
-				this.showNextLevel()
-			} else {
-				this.showGameWin()
-			}
-		}
+	setScore(value) {
+		this.setValue(this.$score, value)
 	}
 
 	resetScore(value) {

@@ -330,7 +330,17 @@ export default class Controller {
 
 	#setScore() {
 		this.#score += this.#alikeItems.length
-		this.#interface.setScore(this.#score, this.#levels[this.#level], this.#levels[this.#level + 1])
+
+		if (this.#score < this.#levels[this.#level].score) {
+			this.#interface.setScore(this.#score)
+		} else if (this.#score >= this.#levels[this.#level].score) {
+			this.#interface.setScore(this.#levels[this.#level].score)
+			if (this.#levels[this.#level + 1]) {
+				this.#interface.showNextLevel()
+			} else {
+				this.#interface.showGameWin()
+			}
+		}
 	}
 
 	#resetScore() {
