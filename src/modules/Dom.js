@@ -23,9 +23,8 @@ export default class Dom {
 		$el.style.display = 'none'
 	}
 
-	animateValue(obj, start = 0, end) {
+	animateValue(obj, start = 0, end, duration = (Math.abs(end - start) || 1) * 25) {
 		let startTimestamp = null;
-		const duration = (Math.abs(end - start) || 1) * 25
 		const step = (timestamp) => {
 			if (!startTimestamp) startTimestamp = timestamp;
 			const progress = Math.min((timestamp - startTimestamp) / duration, 1);
