@@ -12,6 +12,7 @@ export default class Controller {
 	#match = 2
 	#stepFrames = 1
 	#animationStep = 1
+	#countResetLevel = 0
 
 	constructor({ canvasInstance, interfaceInstance, itemsInstances, levels, animationStep }) {
 		this.#canvas = canvasInstance
@@ -330,9 +331,12 @@ export default class Controller {
 
 	#setScore() {
 		this.#score += this.#alikeItems.length
-
 		if (this.#score < this.#levels[this.#level].score) {
 			this.#interface.setScore(this.#score)
+
+			if (this.#countResetLevel < this.#levels[this.#level].maxResetLevel) {
+				this.#interface.showResetLevel()
+			}
 		} else if (this.#score >= this.#levels[this.#level].score) {
 			this.#interface.setScore(this.#levels[this.#level].score)
 			if (this.#levels[this.#level + 1]) {
@@ -377,6 +381,7 @@ export default class Controller {
 		this.#interface.$nextBtn.addEventListener('click', () => {
 			const nextLevel = this.#level + 1
 			if (this.#levels[nextLevel]) {
+				this.#countResetLevel = 0
 				this.#level = nextLevel
 				this.#resetScore()
 				this.#resetMoves()
@@ -390,10 +395,15 @@ export default class Controller {
 
 	#handleResetLevelClick() {
 		this.#interface.$resetBtn.addEventListener('click', () => {
+			this.#countResetLevel++
 			this.#resetScore()
 			this.#resetMoves()
 			this.#generatePlayingField()
 			this.#interface.setProgress(this.#score / this.#levels[this.#level].score)
+
+			if (this.#countResetLevel >= this.#levels[this.#level].maxResetLevel) {
+				this.#interface.hideResetLevel()
+			}
 		})
 	}
 
