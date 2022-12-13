@@ -325,7 +325,7 @@ export default class Controller {
 		let gameIsNotOver = Object.values(this.#possibleMoves).some((move) => move.length >= this.#match)
 
 		this.#possibleMoves = {}
-		return !bombAvailability && !gameIsNotOver
+		return !bombAvailability && !gameIsNotOver || this.#moves <= 0 && this.#score < this.#levels[this.#level].score
 	}
 
 	#setScore() {
@@ -395,7 +395,7 @@ export default class Controller {
 				const yIndex = Math.floor(event.offsetY / (this.#canvas.height / this.#canvas.rowCount))
 				this.#processPickItem(yIndex, xIndex)
 
-				if (this.#alikeItems.length >= this.#match) {
+				if (this.#alikeItems.length >= this.#match && this.#moves > 0) {
 					this.#setScore()
 					this.#clearAlikeItems()
 					setTimeout(() => {
