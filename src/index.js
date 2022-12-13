@@ -14,7 +14,7 @@ const ROW_COUNT = 9
 const CANVAS_WIDTH = ITEM_WIDTH * COL_COUNT
 const CANVAS_HEIGHT = ITEM_HEIGHT * ROW_COUNT
 const LEVELS = {
-	1: { moves: 40, score: 100, match: 3, bombRadius: 2, maxResetField: 3 },
+	1: { moves: 40, score: 100, match: 2, bombRadius: 2, maxResetField: 3 },
 	2: { moves: 35, score: 100, match: 3, bombRadius: 2, maxResetField: 3 },
 	3: { moves: 35, score: 200, match: 3, bombRadius: 2, maxResetField: 3 },
 	4: { moves: 30, score: 200, match: 3, bombRadius: 2, maxResetField: 3 },
