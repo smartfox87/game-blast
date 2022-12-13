@@ -3,8 +3,12 @@ export default class Dom {
 		this.animateValue($el, $el.innerText, value)
 	}
 
-	resetValue($el) {
-		this.animateValue($el, $el.innerText, 0)
+	resetValue($el, value) {
+		if (value) {
+			$el.innerText = value
+		} else {
+			$el.innerText = '0'
+		}
 	}
 
 	setWidth($el, value) {
